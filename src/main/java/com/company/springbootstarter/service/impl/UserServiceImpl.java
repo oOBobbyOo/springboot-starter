@@ -2,6 +2,7 @@ package com.company.springbootstarter.service.impl;
 
 import com.company.springbootstarter.dto.UserCreateRequest;
 import com.company.springbootstarter.dto.UserResponse;
+import com.company.springbootstarter.dto.UserUpdateRequest;
 import com.company.springbootstarter.entity.User;
 import com.company.springbootstarter.repository.UserRepository;
 import com.company.springbootstarter.service.UserService;
@@ -40,6 +41,19 @@ public class UserServiceImpl implements UserService {
         return toResponse(user);
     }
 
+    @Override
+    public UserResponse updateUser(UUID id, UserUpdateRequest request) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        user.setUsername(request.username());
+        user.setEmail(request.email());
+
+        userRepository.save(user);
+
+        return toResponse(user);
+    }
+
     private UserResponse toResponse(User user) {
         return new UserResponse(
                 user.getId(),
@@ -47,5 +61,4 @@ public class UserServiceImpl implements UserService {
                 user.getEmail()
         );
     }
-
 }
