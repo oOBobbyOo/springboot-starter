@@ -16,8 +16,8 @@ class SpringbootStarterApplicationTests {
     void contextLoads() {
         System.out.println(ctx);
 
-         HelloController helloController =  ctx.getBean(HelloController.class);
-         System.out.println("helloController = " + helloController);
+        HelloController helloController = ctx.getBean(HelloController.class);
+        System.out.println("helloController = " + helloController);
     }
 
 }

@@ -43,8 +43,8 @@ public class UserServiceImpl implements UserService {
         System.out.println("正在查询 UUID: " + id);
 
         User user = userRepository.findById(id).orElseThrow(() -> {
-                System.err.println(id);
-                return new RuntimeException("用户不存在: " + id);
+            System.err.println(id);
+            return new RuntimeException("用户不存在: " + id);
         });
         return toResponse(user);
     }

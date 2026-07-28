@@ -4,11 +4,11 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
 public record UserCreateRequest(
-    @NotBlank
-    String username,
+        @NotBlank
+        String username,
 
-    @Email
-    @NotBlank
-    String email
+        @Email
+        @NotBlank
+        String email
 ) {
 }
