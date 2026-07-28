@@ -2,50 +2,62 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
+    <!-- ==================== 父项目依赖 ==================== -->
+    <!-- 继承 Spring Boot 父工程，统一管理依赖版本，避免版本冲突 -->
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>4.1.0</version>
+        <!-- 不指定相对路径，从 Maven 仓库查找父 POM -->
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
+
+    <!-- ==================== 项目基本信息 ==================== -->
+    <!-- 项目组织或公司域名的反向，作为项目在 Maven 仓库中的唯一标识 -->
     <groupId>com.company</groupId>
+    <!-- 项目模块名称，生成的 JAR/WAR 文件会以此命名 -->
     <artifactId>springboot-starter</artifactId>
+    <!-- 项目版本号，SNAPSHOT 表示开发中的快照版本 -->
     <version>0.0.1-SNAPSHOT</version>
+    <!-- 项目显示名称 -->
     <name>springboot-starter</name>
+    <!-- 项目详细描述 -->
     <description>springboot-starter</description>
-    <url/>
-    <licenses>
-        <license/>
-    </licenses>
-    <developers>
-        <developer/>
-    </developers>
-    <scm>
-        <connection/>
-        <developerConnection/>
-        <tag/>
-        <url/>
-    </scm>
+
+    <!-- ==================== 全局属性配置 ==================== -->
     <properties>
-        <java.version>17</java.version>
+        <!-- 指定项目编译和运行的 Java 版本 -->
+        <java.version>26</java.version>
     </properties>
+
+    <!-- ==================== 依赖管理 ==================== -->
     <dependencies>
+        <!-- Spring MVC 框架支持，包含 Tomcat 和 Spring Web 相关依赖 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-webmvc</artifactId>
         </dependency>
 
+        <!-- Spring Boot 热部署工具，修改代码后自动重启应用，仅开发时使用 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
+            <!-- runtime 作用域：编译时不需要，运行时提供 -->
             <scope>runtime</scope>
+            <!-- optional：不传递依赖，避免其他模块继承此依赖 -->
             <optional>true</optional>
         </dependency>
+
+        <!-- Lombok：通过注解简化 Java 代码，如自动生成 getter/setter -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+            <!-- optional：避免将 Lombok 传递给依赖此项目的模块 -->
             <optional>true</optional>
         </dependency>
+
+        <!-- Spring MVC 测试支持，包含 JUnit、MockMvc 等测试工具 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-webmvc-test</artifactId>
@@ -53,12 +65,15 @@
         </dependency>
     </dependencies>
 
+    <!-- ==================== 构建配置 ==================== -->
     <build>
         <plugins>
+            <!-- Spring Boot 打包插件：将项目打包为可独立执行的 Fat JAR -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
+                    <!-- 打包时排除 Lombok，减小 JAR 体积，运行时不需要 Lombok -->
                     <excludes>
                         <exclude>
                             <groupId>org.projectlombok</groupId>
@@ -67,10 +82,13 @@
                     </excludes>
                 </configuration>
             </plugin>
+
+            <!-- Maven 编译插件：配置 Java 编译器和注解处理器 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <executions>
+                    <!-- 主代码编译阶段 -->
                     <execution>
                         <id>default-compile</id>
                         <phase>compile</phase>
@@ -78,6 +96,7 @@
                             <goal>compile</goal>
                         </goals>
                         <configuration>
+                            <!-- 编译时使用的注解处理器，Lombok 需在此注册 -->
                             <annotationProcessorPaths>
                                 <path>
                                     <groupId>org.projectlombok</groupId>
@@ -86,13 +105,16 @@
                             </annotationProcessorPaths>
                         </configuration>
                     </execution>
+                    <!-- 测试代码编译阶段 -->
                     <execution>
                         <id>default-testCompile</id>
+                        <!-- test-compile 阶段：编译 src/test/java 下的测试源码 -->
                         <phase>test-compile</phase>
                         <goals>
                             <goal>testCompile</goal>
                         </goals>
                         <configuration>
+                            <!-- 测试代码编译时同样需要 Lombok 注解处理器 -->
                             <annotationProcessorPaths>
                                 <path>
                                     <groupId>org.projectlombok</groupId>
