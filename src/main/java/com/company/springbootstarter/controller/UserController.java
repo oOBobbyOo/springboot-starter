@@ -15,12 +15,16 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/users")
 public class UserController {
 
     @Autowired
     private UserService userService;
 
+    /**
+     * 创建用户
+     * POST /api/users
+     */
     @PostMapping
     public ResponseEntity<UserResponse> create(@RequestBody @Valid UserCreateRequest request) {
         return ResponseEntity
@@ -28,16 +32,28 @@ public class UserController {
                 .body(userService.createUser(request));
     }
 
+    /**
+     * 查询用户列表
+     * GET /api/users
+     */
     @GetMapping
     public List<UserResponse> list() {
         return userService.getUsers();
     }
 
+    /**
+     * 根据 ID 查询用户
+     * GET /api/users/{id}
+     */
     @GetMapping("/{id}")
     public UserResponse get(@PathVariable UUID id) {
         return userService.getUserById(id);
     }
 
+    /**
+     * 更新用户
+     * PUT /api/users/{id}
+     */
     @PutMapping("/{id}")
     public UserResponse update(
             @PathVariable UUID id,
@@ -46,6 +62,10 @@ public class UserController {
         return userService.updateUser(id, request);
     }
 
+    /**
+     * 删除用户
+     * DELETE /api/users/{id}
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable UUID id) {
 
