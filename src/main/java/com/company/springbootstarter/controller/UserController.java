@@ -40,4 +40,12 @@ public class UserController {
 
         return userService.updateUser(id, request);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable UUID id) {
+
+        userService.deleteUser(id);
+
+        return ResponseEntity.noContent().build();
+    }
 }
