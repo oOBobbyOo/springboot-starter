@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -27,6 +28,10 @@ public class UserController {
                 .body(userService.createUser(request));
     }
 
+    @GetMapping
+    public List<UserResponse> list() {
+        return userService.getUsers();
+    }
 
     @GetMapping("/{id}")
     public UserResponse get(@PathVariable UUID id) {

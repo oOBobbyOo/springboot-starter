@@ -9,6 +9,7 @@ import com.company.springbootstarter.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -29,6 +30,13 @@ public class UserServiceImpl implements UserService {
         return toResponse(user);
     }
 
+    @Override
+    public List<UserResponse> getUsers() {
+        return userRepository.findAll()
+                .stream()
+                .map(this::toResponse)
+                .toList();
+    }
 
     @Override
     public UserResponse getUserById(UUID id) {
