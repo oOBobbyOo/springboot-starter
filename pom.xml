@@ -164,6 +164,8 @@
                         </googleJavaFormat>
                         <!-- 自动移除未使用的 import -->
                         <removeUnusedImports/>
+                        <!-- 注解排列整齐-->
+                        <formatAnnotations />
                     </java>
                 </configuration>
                 <executions>

@@ -13,9 +13,9 @@ import org.hibernate.type.SqlTypes;
 public class User {
 
     @Id
-    @GeneratedValue // 告诉 JPA 自动生成主键
-    @UuidGenerator // 默认生成时间有序的 UUID (v7)，对索引友好
-    @JdbcTypeCode(SqlTypes.CHAR) // 强制 Hibernate 在 JDBC 层面使用 CHAR 类型传递参数
+    @GeneratedValue
+    @UuidGenerator
+    @JdbcTypeCode(SqlTypes.CHAR)
     @Column(name = "id", length = 36, updatable = false, nullable = false)
     private UUID id;
 
