@@ -8,9 +8,12 @@ import com.company.springbootstarter.repository.UserRepository;
 import com.company.springbootstarter.service.UserService;
 import java.util.List;
 import java.util.UUID;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
+@Slf4j
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -18,12 +21,20 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponse createUser(UserCreateRequest request) {
+        if (userRepository.existsByUsername(request.username())) {
+            throw new RuntimeException("用户名已存在: " + request.username());
+        }
+
+        if (userRepository.existsByEmail(request.email())) {
+            throw new RuntimeException("邮箱已存在: " + request.email());
+        }
 
         User user = new User();
         user.setUsername(request.username());
         user.setEmail(request.email());
 
-        userRepository.save(user);
+        User saved = userRepository.save(user);
+        log.info("用户创建成功: id={}", saved.getId());
 
         return toResponse(user);
     }
@@ -35,16 +46,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponse getUserById(UUID id) {
-        System.out.println("正在查询 UUID: " + id);
-
         User user =
                 userRepository
                         .findById(id)
-                        .orElseThrow(
-                                () -> {
-                                    System.err.println(id);
-                                    return new RuntimeException("用户不存在: " + id);
-                                });
+                        .orElseThrow(() -> new RuntimeException("用户不存在: id=" + id));
         return toResponse(user);
     }
 
@@ -53,24 +58,29 @@ public class UserServiceImpl implements UserService {
         User user =
                 userRepository
                         .findById(id)
-                        .orElseThrow(() -> new RuntimeException("User not found"));
+                        .orElseThrow(() -> new RuntimeException("用户不存在: id=" + id));
 
-        user.setUsername(request.username());
-        user.setEmail(request.email());
+        if (StringUtils.hasText(request.username())) {
+            user.setUsername(request.username());
+        }
+        if (StringUtils.hasText(request.email())) {
+            user.setEmail(request.email());
+        }
 
-        userRepository.save(user);
+        User updated = userRepository.save(user);
+        log.info("用户更新成功: id={}", updated.getId());
 
         return toResponse(user);
     }
 
     @Override
     public void deleteUser(UUID id) {
-        User user =
-                userRepository
-                        .findById(id)
-                        .orElseThrow(() -> new RuntimeException("User not found"));
+        if (!userRepository.existsById(id)) {
+            throw new RuntimeException("用户不存在: id=" + id);
+        }
 
-        userRepository.delete(user);
+        userRepository.deleteById(id);
+        log.info("用户删除成功: id={}", id);
     }
 
     private UserResponse toResponse(User user) {
