@@ -6,17 +6,15 @@ import com.company.springbootstarter.dto.UserUpdateRequest;
 import com.company.springbootstarter.entity.User;
 import com.company.springbootstarter.repository.UserRepository;
 import com.company.springbootstarter.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.UUID;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service
 public class UserServiceImpl implements UserService {
 
-    @Autowired
-    private UserRepository userRepository;
+    @Autowired private UserRepository userRepository;
 
     @Override
     public UserResponse createUser(UserCreateRequest request) {
@@ -32,27 +30,30 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserResponse> getUsers() {
-        return userRepository.findAll()
-                .stream()
-                .map(this::toResponse)
-                .toList();
+        return userRepository.findAll().stream().map(this::toResponse).toList();
     }
 
     @Override
     public UserResponse getUserById(UUID id) {
         System.out.println("正在查询 UUID: " + id);
 
-        User user = userRepository.findById(id).orElseThrow(() -> {
-            System.err.println(id);
-            return new RuntimeException("用户不存在: " + id);
-        });
+        User user =
+                userRepository
+                        .findById(id)
+                        .orElseThrow(
+                                () -> {
+                                    System.err.println(id);
+                                    return new RuntimeException("用户不存在: " + id);
+                                });
         return toResponse(user);
     }
 
     @Override
     public UserResponse updateUser(UUID id, UserUpdateRequest request) {
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+        User user =
+                userRepository
+                        .findById(id)
+                        .orElseThrow(() -> new RuntimeException("User not found"));
 
         user.setUsername(request.username());
         user.setEmail(request.email());
@@ -64,17 +65,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteUser(UUID id) {
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+        User user =
+                userRepository
+                        .findById(id)
+                        .orElseThrow(() -> new RuntimeException("User not found"));
 
         userRepository.delete(user);
     }
 
     private UserResponse toResponse(User user) {
-        return new UserResponse(
-                user.getId(),
-                user.getUsername(),
-                user.getEmail()
-        );
+        return new UserResponse(user.getId(), user.getUsername(), user.getEmail());
     }
 }

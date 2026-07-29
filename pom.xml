@@ -163,12 +163,12 @@
                             <style>AOSP</style>
                         </googleJavaFormat>
                         <!-- 自动移除未使用的 import -->
-                        <removeUnusedImports />
+                        <removeUnusedImports/>
                     </java>
                 </configuration>
                 <executions>
                     <execution>
-                        <phase>verify</phase>
+                        <phase>compile</phase>
                         <goals>
                             <!-- 编译时检查，不通过则报错 -->
                             <goal>check</goal>

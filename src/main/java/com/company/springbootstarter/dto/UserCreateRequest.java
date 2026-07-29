@@ -3,12 +3,4 @@ package com.company.springbootstarter.dto;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
-public record UserCreateRequest(
-        @NotBlank
-        String username,
-
-        @Email
-        @NotBlank
-        String email
-) {
-}
+public record UserCreateRequest(@NotBlank String username, @Email @NotBlank String email) {}

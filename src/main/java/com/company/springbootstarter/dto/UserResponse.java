@@ -2,9 +2,4 @@ package com.company.springbootstarter.dto;
 
 import java.util.UUID;
 
-public record UserResponse(
-        UUID id,
-        String username,
-        String email
-) {
-}
+public record UserResponse(UUID id, String username, String email) {}

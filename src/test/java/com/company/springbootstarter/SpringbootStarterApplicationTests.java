@@ -9,8 +9,7 @@ import org.springframework.context.ApplicationContext;
 @SpringBootTest
 class SpringbootStarterApplicationTests {
 
-    @Resource
-    private ApplicationContext ctx;
+    @Resource private ApplicationContext ctx;
 
     @Test
     void contextLoads() {
@@ -19,5 +18,4 @@ class SpringbootStarterApplicationTests {
         HelloController helloController = ctx.getBean(HelloController.class);
         System.out.println("helloController = " + helloController);
     }
-
 }
