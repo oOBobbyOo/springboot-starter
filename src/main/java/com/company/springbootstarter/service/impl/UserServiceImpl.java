@@ -4,6 +4,8 @@ import com.company.springbootstarter.dto.UserCreateRequest;
 import com.company.springbootstarter.dto.UserResponse;
 import com.company.springbootstarter.dto.UserUpdateRequest;
 import com.company.springbootstarter.entity.User;
+import com.company.springbootstarter.exception.DuplicateResourceException;
+import com.company.springbootstarter.exception.ResourceNotFoundException;
 import com.company.springbootstarter.repository.UserRepository;
 import com.company.springbootstarter.service.UserService;
 import java.util.List;
@@ -22,11 +24,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponse createUser(UserCreateRequest request) {
         if (userRepository.existsByUsername(request.username())) {
-            throw new RuntimeException("用户名已存在: " + request.username());
+            throw new DuplicateResourceException("用户名已存在: " + request.username());
         }
 
         if (userRepository.existsByEmail(request.email())) {
-            throw new RuntimeException("邮箱已存在: " + request.email());
+            throw new DuplicateResourceException("邮箱已存在: " + request.email());
         }
 
         User user = new User();
@@ -49,7 +51,7 @@ public class UserServiceImpl implements UserService {
         User user =
                 userRepository
                         .findById(id)
-                        .orElseThrow(() -> new RuntimeException("用户不存在: id=" + id));
+                        .orElseThrow(() -> new ResourceNotFoundException("用户", id));
         return toResponse(user);
     }
 
@@ -58,7 +60,7 @@ public class UserServiceImpl implements UserService {
         User user =
                 userRepository
                         .findById(id)
-                        .orElseThrow(() -> new RuntimeException("用户不存在: id=" + id));
+                        .orElseThrow(() -> new ResourceNotFoundException("用户", id));
 
         if (StringUtils.hasText(request.username())) {
             user.setUsername(request.username());
@@ -76,7 +78,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteUser(UUID id) {
         if (!userRepository.existsById(id)) {
-            throw new RuntimeException("用户不存在: id=" + id);
+            throw new ResourceNotFoundException("用户", id);
         }
 
         userRepository.deleteById(id);
