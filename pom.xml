@@ -39,16 +39,19 @@
             <artifactId>spring-boot-starter-webmvc</artifactId>
         </dependency>
 
+        <!-- Spring Data JPA：提供基于JPA的数据库访问支持，简化数据持久层开发 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
 
+        <!-- Spring Validation：提供数据校验功能，支持注解式参数验证（如@NotNull、@Valid等） -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
 
+        <!-- MySQL 驱动：提供MySQL数据库的JDBC连接支持，运行时必需 -->
         <dependency>
             <groupId>com.mysql</groupId>
             <artifactId>mysql-connector-j</artifactId>
@@ -138,6 +141,38 @@
                                 </path>
                             </annotationProcessorPaths>
                         </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Spotless 代码格式化插件 -->
+            <plugin>
+                <groupId>com.diffplug.spotless</groupId>
+                <artifactId>spotless-maven-plugin</artifactId>
+                <version>3.9.0</version>
+                <configuration>
+                    <java>
+                        <!-- 包含需要格式化的目录 -->
+                        <includes>
+                            <include>src/main/java/**/*.java</include>
+                            <include>src/test/java/**/*.java</include>
+                        </includes>
+                        <!-- 使用 Google Java Format (AOSP 风格为 4 空格缩进，适合大多数 Spring Boot 项目) -->
+                        <googleJavaFormat>
+                            <version>1.35.0</version>
+                            <style>AOSP</style>
+                        </googleJavaFormat>
+                        <!-- 自动移除未使用的 import -->
+                        <removeUnusedImports />
+                    </java>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>verify</phase>
+                        <goals>
+                            <!-- 编译时检查，不通过则报错 -->
+                            <goal>check</goal>
+                        </goals>
                     </execution>
                 </executions>
             </plugin>
