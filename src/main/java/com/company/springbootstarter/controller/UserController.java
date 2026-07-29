@@ -26,22 +26,22 @@ public class UserController {
 
     /** 查询用户列表 GET /api/users */
     @GetMapping
-    public List<UserResponse> list() {
-        return userService.getUsers();
+    public ResponseEntity<List<UserResponse>> list() {
+        return ResponseEntity.ok(userService.getUsers());
     }
 
     /** 根据 ID 查询用户 GET /api/users/{id} */
     @GetMapping("/{id}")
-    public UserResponse get(@PathVariable UUID id) {
-        return userService.getUserById(id);
+    public ResponseEntity<UserResponse> get(@PathVariable UUID id) {
+        return ResponseEntity.ok(userService.getUserById(id));
     }
 
     /** 更新用户 PUT /api/users/{id} */
     @PutMapping("/{id}")
-    public UserResponse update(
+    public ResponseEntity<UserResponse> update(
             @PathVariable UUID id, @RequestBody @Valid UserUpdateRequest request) {
 
-        return userService.updateUser(id, request);
+        return ResponseEntity.ok(userService.updateUser(id, request));
     }
 
     /** 删除用户 DELETE /api/users/{id} */
