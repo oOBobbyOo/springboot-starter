@@ -10,6 +10,7 @@
 | Spring Boot     | 4.1.0 | 核心框架                              |
 | Spring WebMVC   | —     | RESTful Web 服务                      |
 | Spring Data JPA | —     | 数据库持久层                          |
+| Spring Actuator | —     | 应用监控与健康检查                    |
 | MySQL           | —     | 关系型数据库                          |
 | Lombok          | —     | 简化代码注解                          |
 | Spotless        | 3.9.0 | 代码格式化（Google Java Format AOSP） |
@@ -100,6 +101,14 @@ java -jar target/springboot-starter-0.0.1-SNAPSHOT.jar
 | GET    | `/api/users/{id}` | 根据 ID 查询用户 |
 | PUT    | `/api/users/{id}` | 更新用户         |
 | DELETE | `/api/users/{id}` | 删除用户         |
+
+### 应用监控 (Actuator)
+
+| 方法 | 路径                          | 说明                     |
+| ---- | ----------------------------- | ------------------------ |
+| GET  | `/actuator/health`            | 健康检查（含数据库状态） |
+| GET  | `/actuator/health/liveness`   | 存活探针                 |
+| GET  | `/actuator/health/readiness`  | 就绪探针                 |
 
 #### 请求/响应示例
 
@@ -203,6 +212,16 @@ public record UserCreateRequest(
 ### 7. UUID 主键
 
 实体使用 UUID 作为主键，由 Hibernate `@UuidGenerator` 自动生成，避免自增 ID 的安全和分布式问题。
+
+### 8. Actuator 应用监控
+
+集成 **Spring Boot Actuator**，提供开箱即用的健康检查端点：
+
+- `/actuator/health` — 应用整体健康状态（含数据库、磁盘等组件状态）
+- `/actuator/health/liveness` — Kubernetes 存活探针
+- `/actuator/health/readiness` — Kubernetes 就绪探针
+
+> **注意：** 默认禁用了数据库健康检查（`management.health.db.enabled=false`），避免数据库不可用时导致 health 返回 `DOWN`。如需启用，在 `application.properties` 中删除该配置即可。
 
 ## 常用命令
 

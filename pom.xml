@@ -76,6 +76,12 @@
             <optional>true</optional>
         </dependency>
 
+        <!-- Actuator 监控依赖（需配合 application.yml 中的 management 配置使用） -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+
         <!-- Spring MVC 测试支持，包含 JUnit、MockMvc 等测试工具 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
