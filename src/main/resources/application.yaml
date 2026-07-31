@@ -1,0 +1,46 @@
+server:
+  port: 8000 # 默认为 8080
+
+spring:
+  application:
+    name: springboot-starter
+
+  devtools:
+    restart:
+      enabled: true # 启用热部署重启 (生产环境请务必设为 false)
+
+  threads:
+    virtual:
+      enabled: true # 开启虚拟线程 (Spring Boot 3.2+ / 4.x 核心特性)
+
+  mvc:
+    problemdetails:
+      enabled: true # 启用 RFC 7807 标准错误响应
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/springboot_db?characterEncoding=utf-8
+    username: root
+    password: "123456"
+
+  jpa:
+    hibernate:
+      ddl-auto: update # DDL 模式：update 自动更新表结构，生产环境建议使用 validate 或 none
+    show-sql: true # 在控制台打印 SQL 语句（开发调试用，生产环境建议关闭）
+    properties:
+      hibernate:
+        format_sql: true # 格式化输出的 SQL，便于阅读
+        highlight_sql: true # [Hibernate 6+] 高亮显示 SQL 关键字，进一步提升开发调试体验
+        dialect: org.hibernate.dialect.MySQLDialect # 指定 Hibernate SQL 方言（MySQL 8+）
+    open-in-view: false # 关闭 Open Session in View（避免在视图渲染时保持数据库连接，减少连接占用）
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health # 仅暴露 health 端点，如果需要全部可写 '*'
+  endpoint:
+    health:
+      show-details: always # 可选：显示详细的健康信息（如数据库、Redis状态）
+  health:
+    db:
+      enabled: false # 禁用数据库健康检查（数据库未启动时 health 会返回 DOWN，影响整体健康状态）
